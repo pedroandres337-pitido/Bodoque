@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victoria 💖</title>
+
+<style>
+body{
+    margin:0;
+    background: radial-gradient(circle at top, #1a1a1a, #000);
+    color:white;
+    font-family: Arial, sans-serif;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+    text-align:center;
+}
+
+h1{
+    font-size:2rem;
+    margin-bottom:20px;
+    z-index:2;
+}
+
+button{
+    padding:12px 30px;
+    font-size:18px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    margin:10px;
+    transition:0.3s;
+    z-index:2;
+}
+
+#si{
+    background:#ff2e63;
+    color:white;
+}
+
+#no{
+    background:#444;
+    color:white;
+    position:absolute;
+}
+
+#imagenFinal{
+    display:none;
+    max-width:85%;
+    border-radius:20px;
+    margin-top:20px;
+    box-shadow:0 0 30px #ff2e63;
+    z-index:2;
+}
+
+.corazon{
+    position:absolute;
+    color:#ff2e63;
+    font-size:20px;
+    animation: caer 5s linear infinite;
+}
+
+@keyframes caer{
+    0%{ transform:translateY(-10vh); opacity:1;}
+    100%{ transform:translateY(110vh); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="pregunta">Victoria… ¿Quieres ser mi San Valentín? 💖</h1>
+
+<button id="si">SI</button>
+<button id="no">NO</button>
+
+<h2 id="contador" style="display:none;"></h2>
+
+<img id="imagenFinal" src="foto.jpg">
+
+<audio id="musica" loop>
+<source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const botonNo = document.getElementById("no");
+const botonSi = document.getElementById("si");
+const pregunta = document.getElementById("pregunta");
+const imagen = document.getElementById("imagenFinal");
+const musica = document.getElementById("musica");
+const contador = document.getElementById("contador");
+
+botonNo.addEventListener("mouseover", moverBoton);
+botonNo.addEventListener("click", function(){
+    pregunta.textContent = "¿Segura Victoria? 😏";
+    agrandarSi();
+    moverBoton();
+    if(navigator.vibrate){
+        navigator.vibrate(200);
+    }
+});
+
+function moverBoton(){
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    botonNo.style.left = x + "px";
+    botonNo.style.top = y + "px";
+}
+
+function agrandarSi(){
+    let size = parseFloat(window.getComputedStyle(botonSi).fontSize);
+    botonSi.style.fontSize = (size + 5) + "px";
+}
+
+botonSi.addEventListener("click", function(){
+    botonNo.style.display="none";
+    botonSi.style.display="none";
+    pregunta.style.display="none";
+    iniciarCuenta();
+});
+
+function iniciarCuenta(){
+    let tiempo = 3;
+    contador.style.display="block";
+    contador.textContent="Preparando sorpresa para Victoria... " + tiempo;
+
+    let intervalo = setInterval(()=>{
+        tiempo--;
+        contador.textContent="Preparando sorpresa para Victoria... " + tiempo;
+        if(tiempo==0){
+            clearInterval(intervalo);
+            contador.style.display="none";
+            mostrarFinal();
+        }
+    },1000);
+}
+
+function mostrarFinal(){
+    imagen.style.display="block";
+    musica.play();
+    lluviaCorazones();
+}
+
+function lluviaCorazones(){
+    setInterval(()=>{
+        const corazon = document.createElement("div");
+        corazon.classList.add("corazon");
+        corazon.innerHTML="❤";
+        corazon.style.left=Math.random()*100+"vw";
+        corazon.style.fontSize=(Math.random()*20+15)+"px";
+        document.body.appendChild(corazon);
+
+        setTimeout(()=>{
+            corazon.remove();
+        },5000);
+    },300);
+}
+</script>
+
+</body>
+</html>
